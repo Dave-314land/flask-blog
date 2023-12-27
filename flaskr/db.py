@@ -33,3 +33,8 @@ def init_db_cli_command():
     """Init database and display sucess message in cli"""
     init_db()
     click.echo('Initialized the database.')
+
+def init_app(app):
+    """Initialize app with teardown and cli commands"""
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_cli_command)

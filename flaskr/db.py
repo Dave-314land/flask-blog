@@ -4,7 +4,7 @@ from flask import current_app, g
 
 
 def get_db():
-    """Connect to database"""
+    """Connect to database if not already connected in request"""
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
@@ -13,3 +13,11 @@ def get_db():
         g.db.row_factory = sqlite3.Row
 
     return g.db
+
+
+def close_db(e=None):
+    """Close connection to database"""
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
